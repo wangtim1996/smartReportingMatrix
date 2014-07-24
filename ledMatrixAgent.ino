@@ -110,7 +110,7 @@
     {0, 0, 0, 0, 0, 0, 0, 0}, \
     {0, 0, 1, 1, 0, 0, 0, 0}  \
 }
-
+/*
 #define SMILE { \
     {0, 0, 0, 0, 0, 0, 0, 0},  \
     {0, 0, 1, 0, 0, 1, 0, 0}, \
@@ -121,6 +121,17 @@
     {0, 1, 0, 0, 0, 0, 1, 0}, \
     {0, 0, 1, 1, 1, 1, 0, 0} \
 }
+*/
+#define SMILE { \
+    {1, 0, 0, 0, 1, 0, 0, 1},  \
+    {1, 1, 0, 0, 1, 0, 1, 0}, \
+    {1, 1, 1, 0, 0, 0, 0, 0}, \
+    {1, 1, 1, 1, 0, 0, 0, 0}, \
+    {1, 1, 1, 1, 1, 0, 0, 0}, \
+    {1, 1, 1, 1, 1, 1, 0, 0}, \
+    {1, 1, 1, 1, 1, 1, 1, 0}, \
+    {1, 1, 1, 1, 1, 1, 1, 1} \
+}
 
 
 byte col = 0;
@@ -130,10 +141,10 @@ byte leds[8][8];
 int pins[17]= {-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ,15 ,16 ,17};
 
 // col[xx] of leds = pin yy on led matrix
-int cols[8] = {pins[2], pins[8], pins[16], pins[1], pins[11], pins[15], pins[12], pins[14]};
+int cols[8] = {pins[5], pins[10], pins[9], pins[3], pins[13], pins[4], pins[6], pins[7]};
 //
 // row[xx] of leds = pin yy on led matrix
-int rows[8] = {pins[7], pins[6], pins[4], pins[13], pins[3], pins[9], pins[10], pins[5]};
+int rows[8] = {pins[14], pins[11], pins[15], pins[12], pins[1], pins[16], pins[8], pins[2]};
 /*
 // col[xx] of leds = pin yy on led matrix
 int cols[8] = {pins[2], pins[8], pins[16], pins[1], pins[11], pins[15], pins[12], pins[14]};
@@ -198,24 +209,25 @@ void clearLeds() {
 void setPattern(int pattern) {
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-      leds[i][j] = patterns[pattern][i][j];
+      leds[i][j] = patterns[pattern][j][i];//row column switch
     }
   }
 }
 
-void slidePattern(int pattern, int del) {
+void slidePattern(int pattern, int del) 
+{
   for (int l = 0; l < 8; l++) //L
   {
-    for (int i = 0; i < 7; i++) 
+    for (int i = 0; i < 8; i++) 
     {
-      for (int j = 0; j < 8; j++) 
+      for (int j = 0; j < 7; j++) 
       {
-        leds[j][i] = leds[j][i+1]; //#1
+        leds[j][i] = leds[j+1][i]; //#1
       }
     }
     for (int j = 0; j < 8; j++) 
     {
-      leds[j][7] = patterns[pattern][j][0 + l];//L
+      leds[7][j] = patterns[pattern][j][0+l];//L // row column switch
     }
     delay(del);
   }
@@ -223,18 +235,18 @@ void slidePattern(int pattern, int del) {
 
 // Interrupt routine
 void display() {
-  digitalWrite(cols[col], LOW);  // Turn whole previous column off
+  digitalWrite(cols[col], HIGH);  // Turn whole previous column off
   col++;
   if (col == 8) {
     col = 0;
   }
   for (int row = 0; row < 8; row++) {
     if (leds[col][7 - row] == 1) {
-        digitalWrite(rows[row], LOW);  // Turn on this led
+        digitalWrite(rows[row], HIGH);  // Turn on this led
     }
     else {
-      digitalWrite(rows[row], HIGH); // Turn off this led
+      digitalWrite(rows[row], LOW); // Turn off this led
     }
   }
-  digitalWrite(cols[col], HIGH); // Turn whole column on at once (for equal lighting times)
+  digitalWrite(cols[col], LOW); // Turn whole column on at once (for equal lighting times)
 }

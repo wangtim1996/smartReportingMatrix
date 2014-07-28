@@ -12,7 +12,7 @@
 
 #include <FrequencyTimer2.h>
 
-#define SPACE { \
+#define SPACE8x8 { \
     {0, 0, 0, 0, 0, 0, 0, 0},  \
     {0, 0, 0, 0, 0, 0, 0, 0}, \
     {0, 0, 0, 0, 0, 0, 0, 0}, \
@@ -23,7 +23,7 @@
     {0, 0, 0, 0, 0, 0, 0, 0} \
 }
 
-#define H { \
+#define H8x8 { \
     {0, 1, 0, 0, 0, 0, 1, 0}, \
     {0, 1, 0, 0, 0, 0, 1, 0}, \
     {0, 1, 0, 0, 0, 0, 1, 0}, \
@@ -34,7 +34,7 @@
     {0, 1, 0, 0, 0, 0, 1, 0}  \
 }
 
-#define E  { \
+#define E8x8  { \
     {0, 1, 1, 1, 1, 1, 1, 0}, \
     {0, 1, 0, 0, 0, 0, 0, 0}, \
     {0, 1, 0, 0, 0, 0, 0, 0}, \
@@ -45,7 +45,7 @@
     {0, 1, 1, 1, 1, 1, 1, 0}  \
 }
 
-#define L { \
+#define L8x8 { \
     {0, 1, 0, 0, 0, 0, 0, 0}, \
     {0, 1, 0, 0, 0, 0, 0, 0}, \
     {0, 1, 0, 0, 0, 0, 0, 0}, \
@@ -56,7 +56,7 @@
     {0, 1, 1, 1, 1, 1, 1, 0}  \
 }
 
-#define O { \
+#define O8x8 { \
     {0, 0, 0, 1, 1, 0, 0, 0}, \
     {0, 0, 1, 0, 0, 1, 0, 0}, \
     {0, 1, 0, 0, 0, 0, 1, 0}, \
@@ -67,7 +67,7 @@
     {0, 0, 0, 1, 1, 0, 0, 0}  \
 }
 
-#define W { \
+#define W8x8 { \
     {1, 0, 0, 0, 0, 0, 1, 0}, \
     {1, 0, 0, 0, 0, 0, 1, 0}, \
     {1, 0, 0, 0, 0, 0, 1, 0}, \
@@ -78,7 +78,7 @@
     {0, 0, 1, 0, 1, 0, 0, 0}  \
 }
 
-#define R { \
+#define R8x8 { \
     {0, 1, 1, 1, 1, 0, 0, 0}, \
     {0, 1, 0, 0, 0, 1, 0, 0}, \
     {0, 1, 0, 0, 0, 1, 0, 0}, \
@@ -89,7 +89,7 @@
     {0, 1, 0, 0, 0, 0, 1, 0}  \
 }
 
-#define D { \
+#define D8x8 { \
     {0, 1, 1, 1, 1, 0, 0, 0}, \
     {0, 1, 0, 0, 0, 1, 0, 0}, \
     {0, 1, 0, 0, 0, 0, 1, 0}, \
@@ -100,7 +100,7 @@
     {0, 1, 1, 1, 1, 0, 0, 0}  \
 }
 
-#define EXCLAIM { \
+#define EXCLAIM8x8 { \
     {0, 0, 1, 1, 0, 0, 0, 0}, \
     {0, 1, 1, 1, 1, 0, 0, 0}, \
     {0, 1, 1, 1, 1, 0, 0, 0}, \
@@ -111,15 +111,48 @@
     {0, 0, 1, 1, 0, 0, 0, 0}  \
 }
 
-#define SMILE { \
+#define QUESTION8x8 { \
+    {0, 0, 1, 1, 1, 1, 0, 0},  \
+    {0, 1, 1, 0, 0, 1, 1, 0}, \
+    {0, 1, 1, 0, 0, 1, 1, 0}, \
+    {0, 0, 0, 0, 0, 1, 1, 0}, \
+    {0, 0, 0, 1, 1, 1, 0, 0}, \
+    {0, 0, 0, 1, 1, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 1, 1, 0, 0, 0} \
+}
+
+#define FULLSTOP8x8 { \
     {0, 0, 0, 0, 0, 0, 0, 0},  \
-    {0, 0, 1, 0, 0, 1, 0, 0}, \
-    {0, 0, 1, 0, 0, 1, 0, 0}, \
-    {0, 0, 1, 0, 0, 1, 0, 0}, \
     {0, 0, 0, 0, 0, 0, 0, 0}, \
     {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 1, 0, 0, 0, 0, 0}, \
+    {0, 1, 1, 0, 0, 0, 0, 0} \
+}
+
+#define SMILE8x8 { \
+    {0, 0, 0, 0, 0, 0, 0, 0},  \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {1, 1, 1, 1, 1, 1, 1, 1}, \
+    {1, 0, 0, 0, 0, 0, 0, 1}, \
+    {1, 0, 0, 0, 0, 0, 0, 1}, \
     {0, 1, 0, 0, 0, 0, 1, 0}, \
-    {0, 0, 1, 1, 1, 1, 0, 0} \
+    {0, 0, 1, 1, 1, 1, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0} \
+}
+
+#define FROWN8x8 { \
+    {0, 0, 0, 0, 0, 0, 0, 0},  \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 1, 0, 0, 0, 0}, \
+    {0, 0, 1, 0, 1, 0, 0, 0}, \
+    {0, 1, 0, 0, 0, 1, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0} \
 }
 
 
@@ -141,12 +174,38 @@ int cols[8] = {pins[5], pins[10], pins[9], pins[3], pins[13], pins[4], pins[6], 
 // row[xx] of leds = pin yy on led matrix
 int rows[8] = {pins[2], pins[8], pins[16], pins[1], pins[11], pins[15], pins[12], pins[14]};
 */
-const int numPatterns = 15;
-byte patterns[numPatterns][8][8] = {
-  SMILE,SPACE,H,E,L,L,O,SPACE,W,O,R,L,D,EXCLAIM,SPACE
+byte symbols[][8][8] = 
+{
+  SPACE8x8,SMILE8x8,FROWN8x8,EXCLAIM8x8,QUESTION8x8,FULLSTOP8x8,D8x8,E8x8,H8x8,L8x8,O8x8,R8x8,W8x8
 };
 
+enum symbolLib
+{
+  SPACE,SMILE,FROWN,EXCLAIM,QUESTION,FULLSTOP,D,E,H,L,O,R,W
+};
+
+
+
+byte patternHelloWorld [] =//start with space
+{
+  SPACE,H,E,L,L,O,SPACE,W,O,R,L,D,EXCLAIM
+};
+
+
+byte patternTest [] =//start with space
+{
+  SPACE,SMILE,E,L,L,FROWN,QUESTION,EXCLAIM
+};
+
+byte *patternCompendium[] =
+{
+  patternHelloWorld,patternTest
+};
+
+int symbol = 0;
 int pattern = 0;
+int sequence = 0;
+bool slide = false;
 
 void setup() {
   // sets the pins as output
@@ -172,12 +231,66 @@ void setup() {
   // Set interrupt routine to be called
   FrequencyTimer2::setOnOverflow(display);
 
-  setPattern(pattern);
+  setSymbol(1);//smile
+  
+  
+  Serial.begin(9600);
+
 }
 
 void loop() {
-    pattern = ++pattern % numPatterns;
-    slidePattern(pattern, 60);
+  
+  while(Serial.available() > 0)
+  {
+    int input = Serial.parseInt();
+    Serial.print("loop");
+    Serial.println(input);
+    
+    //if (Serial.read() == '/n')
+    {
+      if(input == 1)
+      {
+        sequence = 0;
+        slide = true;
+
+      }
+      else
+      {
+        if(input == 4)
+        {
+          sequence = 1;
+          slide = true;
+        }
+        pattern = 0; //beginning of hello world
+        
+        
+      }
+      if(input == 2)
+      {
+        slide = false;
+        setSymbol(1);
+        Serial.println("set smile");
+      }
+      if(input == 3)
+      {
+        slide = false;
+        setSymbol(2);
+        Serial.println("set frown");
+      }
+      
+      
+    }
+  }
+  if(slide)
+  {
+    Serial.println(sizeof(&patternCompendium[0]));
+    pattern = ++pattern;
+    if(pattern > sizeof(patternCompendium[sequence]))//end of hello world!
+    {
+      pattern = 0;//beginning of hello world
+    }
+    slidePatternLeft(sequence, pattern, 60);  
+  }
 }
 
 void clearLeds() {
@@ -189,15 +302,15 @@ void clearLeds() {
   }
 }
 
-void setPattern(int pattern) {
+void setSymbol(int symbol) {
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-      leds[i][j] = patterns[pattern][i][j];
+      leds[i][j] = symbols[symbol][i][j];
     }
   }
 }
 
-void slidePattern(int pattern, int del) {
+void slidePatternLeft(int sequence, int pattern, int del) {
   for (int l = 0; l < 8; l++) //L
   {
     for (int i = 0; i < 7; i++) 
@@ -209,11 +322,31 @@ void slidePattern(int pattern, int del) {
     }
     for (int j = 0; j < 8; j++) 
     {
-      leds[j][7] = patterns[pattern][j][0 + l];//L
+      leds[j][7] = symbols[patternCompendium[sequence][pattern]][j][0 + l];//L
     }
     delay(del);
   }
 }
+
+void slidePatternUp(int pattern, int del)
+{
+  for (int l = 0; l < 8; l++) //L
+  {
+    for (int i = 0; i < 8; i++) 
+    {
+      for (int j = 0; j < 7; j++) 
+      {
+        leds[j][i] = leds[j+1][i]; //#1
+      }
+    }
+    for (int j = 0; j < 8; j++) 
+    {
+      leds[7][j] = symbols[patternHelloWorld[pattern]][0+l][j];//L
+    }
+    delay(del);
+  }
+}  
+
 
 // Interrupt routine
 void display() {

@@ -11,6 +11,7 @@
  */
 
 #include <FrequencyTimer2.h>
+#include <avr/pgmspace.h>
 
 #define SPACE8x8 { \
     {0, 0, 0, 0, 0, 0, 0, 0},  \
@@ -238,7 +239,7 @@ int cols[8] = {pins[5], pins[10], pins[9], pins[3], pins[13], pins[4], pins[6], 
 // row[xx] of leds = pin yy on led matrix
 int rows[8] = {pins[2], pins[8], pins[16], pins[1], pins[11], pins[15], pins[12], pins[14]};
 */
-byte symbols[][8][8] = 
+byte symbols[][8][8] PROGMEM = 
 {
   SPACE8x8,
   SMILE8x8,
@@ -260,6 +261,8 @@ byte symbols[][8][8] =
   R8x8,
   W8x8
 };
+
+//byte currentSymbol[8][8];
 
 enum symbolLib
 {
@@ -346,7 +349,8 @@ void setup() {
   
   
   Serial.begin(9600);
-  Serial.println(sizeof(&patternCompendium[0]));
+  byte currentByte = pgm_read_byte(&(symbols[1][2][0]));
+  Serial.println(currentByte);
 }
 
 void loop() 
@@ -411,7 +415,7 @@ void loop()
     {
       pattern = 0;//beginning of hello world
     }
-    animate(sequence, pattern, 200, 100);  
+    slidePatternLeft(sequence, pattern, 60);  
   }
 }
 
@@ -427,7 +431,8 @@ void clearLeds() {
 void setSymbol(int symbol) {
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-      leds[i][j] = symbols[symbol][i][j];
+      leds[i][j] = pgm_read_byte(&(symbols[symbol][i][j]));
+      //pgm_read_byte(&(symbols[symbol]
     }
   }
 }
@@ -444,7 +449,9 @@ void slidePatternLeft(int sequence, int pattern, int del) {
     }
     for (int j = 0; j < 8; j++) 
     {
-      leds[j][7] = symbols[patternCompendium[sequence][pattern]][j][0 + l];//L
+      //pgm_read_byte(&(symbols[1][2][0]))
+      leds[j][7] = pgm_read_byte(&(symbols[patternCompendium[sequence][pattern]][j][0 + l]));
+      //leds[j][7] = symbols[patternCompendium[sequence][pattern]][j][0 + l];//L
     }
     delay(del);
   }
@@ -463,7 +470,7 @@ void slidePatternUp(int sequence, int pattern, int del)
     }
     for (int j = 0; j < 8; j++) 
     {
-      leds[7][j] = symbols[patternCompendium[sequence][pattern]][0+l][j];//L
+      leds[7][j] = pgm_read_byte(&(symbols[patternCompendium[sequence][pattern]][0+l][j]));//L
     }
     delay(del);
   }
@@ -477,7 +484,7 @@ void animate(int sequence, int pattern, int del, int offDel)
   {
     for (int j = 0; j < 8; j++) 
     {
-      leds[j][i] = symbols[patternCompendium[sequence][pattern]][j][i];
+      leds[j][i] = pgm_read_byte(&(symbols[patternCompendium[sequence][pattern]][j][i]));
     }
   }
   delay(del);

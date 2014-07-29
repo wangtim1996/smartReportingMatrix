@@ -84,13 +84,13 @@ enum symbolLib
 
 byte patternHelloWorld [] =//start with space
 {
-  SPACE,H,E,L,L,O,SPACE,W,O,R,L,D,EXCLAIM
+  H,E,L,L,O,SPACE,W,O,R,L,D,EXCLAIM
 };
 
 
 byte patternTest [] =//start with space
 {
-  SPACE,SMILE,E,L,L,FROWN,QUESTION,EXCLAIM
+  SMILE,E,L,L,FROWN,QUESTION,EXCLAIM
 };
 
 byte patternFrown2Smile [] =
@@ -111,9 +111,9 @@ enum patternLib
 };
 byte patternSize[] = //manually set until elegant solution is found
 {
-  13,
-  8,
-  5
+  sizeof(patternHelloWorld),
+  sizeof(patternTest),
+  sizeof(patternFrown2Smile)
 };
 
 int symbol = 0;
@@ -127,6 +127,9 @@ enum animateStyle
   aniSlideUp,
   aniAnimate
 };
+
+int numCycles = -1;
+int lingeringImage;
 
 void setup() {
   // sets the pins as output
@@ -156,8 +159,7 @@ void setup() {
   
   
   Serial.begin(9600);
-  byte currentByte = pgm_read_byte(&(symbols[1][2][0]));
-  Serial.println(currentByte);
+  Serial.println(sizeof(&patternCompendium[0]));
 }
 
 void loop() 
@@ -178,6 +180,7 @@ void loop()
           sequence = numHelloWorld;
           boolAnimate = true;
           style = aniSlideLeft;
+          numCycles = -1;
           break;
         }
         case 2:
@@ -185,6 +188,8 @@ void loop()
           sequence = numTest;
           boolAnimate = true;
           style = aniSlideLeft;
+          numCycles = 2;
+          lingeringImage = QUESTION;
           break;
         }
         case 3:
@@ -213,6 +218,26 @@ void loop()
           sequence = numFrown2Smile;
           boolAnimate = true;
           style = aniAnimate;
+          numCycles = 1;
+          lingeringImage = SMILE4;
+          break;
+        }
+        case 7:
+        {
+          sequence = numHelloWorld;
+          boolAnimate = true;
+          style = aniSlideUp;
+          numCycles = -1;
+          lingeringImage = SMILE4;
+          break;
+        }
+        case 8:
+        {
+          sequence = numHelloWorld;
+          boolAnimate = true;
+          style = aniAnimate;
+          numCycles = 1;
+          lingeringImage = QUESTION;
           break;
         }
         default:
@@ -223,38 +248,52 @@ void loop()
     }
     
   }
-  if(boolAnimate)
+  if(numCycles > 0 || numCycles == -1)
   {
-    //Serial.println(sizeof(&patternCompendium[0]));
-    pattern = ++pattern;
-    if(pattern > patternSize[sequence])//end of hello world!
+    if(boolAnimate)
     {
-      pattern = 0;//beginning of hello world
-    }
-    switch(style)
-    {
-      case aniSlideLeft:
-      {
-        slidePatternLeft(sequence, pattern, 60);
-        break;
-      }
-      case aniSlideUp:
-      {
-        slidePatternUp(sequence, pattern, 60);
-        break;
-      }
-      case aniAnimate:
-      {
-        animate(sequence, pattern, 200,0);
-        break;
-      }
       
       
-      default:
+      
+      switch(style)
       {
+        case aniSlideLeft:
+        {
+          slidePatternLeft(sequence, pattern, 60);
+          break;
+        }
+        case aniSlideUp:
+        {
+          slidePatternUp(sequence, pattern, 60);
+          break;
+        }
+        case aniAnimate:
+        {
+          animate(sequence, pattern, 200,0);
+          break;
+        }
+        
+        default:
+        {
+          
+        }
         
       }
-    }  
+      if(pattern >= patternSize[sequence] - 1)//end of hello world!//-1 for ghetto fix sequences so I don't access some random memory...
+      {
+        pattern = 0;//beginning of hello world
+        if(numCycles != -1)
+        {
+          numCycles--;
+        }
+      }  
+      pattern = ++pattern;
+      
+    }
+  }
+  else if(boolAnimate)
+  {
+    setSymbol(lingeringImage);
   }
 }
 
@@ -277,6 +316,22 @@ void setSymbol(int symbol) {
 }
 
 void slidePatternLeft(int sequence, int pattern, int del) {
+  //***** 1 col buffer
+  /*
+  for (int i = 0; i < 7; i++) 
+  {
+    for (int j = 0; j < 8; j++) 
+    {
+      leds[j][i] = leds[j][i+1]; //#1
+    }
+  }
+  for (int j = 0; j < 8; j++) 
+  {  
+    leds[j][7] = 0;
+  } 
+  delay(del);
+  */
+  //*****
   for (int l = 0; l < 8; l++) //L
   {
     for (int i = 0; i < 7; i++) 
@@ -298,6 +353,20 @@ void slidePatternLeft(int sequence, int pattern, int del) {
 
 void slidePatternUp(int sequence, int pattern, int del)
 {
+  //***** 1 row buffer
+  for (int i = 0; i < 8; i++) 
+  {
+    for (int j = 0; j < 7; j++) 
+    {
+      leds[j][i] = leds[j+1][i]; //#1
+    }
+  }
+  for (int j = 0; j < 8; j++) 
+  {
+    leds[7][j] = 0;//L
+  }
+  delay(del);
+  //*****
   for (int l = 0; l < 8; l++) //L
   {
     for (int i = 0; i < 8; i++) 

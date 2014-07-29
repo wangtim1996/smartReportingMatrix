@@ -300,26 +300,40 @@ byte patternTest [] =//start with space
   SPACE,SMILE,E,L,L,FROWN,QUESTION,EXCLAIM
 };
 
+byte patternFrown2Smile [] =
+{
+  SMILE0,SMILE1,SMILE2,SMILE3,SMILE4
+};
+
 byte *patternCompendium[] =
 {
-  patternHelloWorld,patternTest
+  patternHelloWorld,patternTest,patternFrown2Smile
 };
 
 enum patternLib
 {
   numHelloWorld,
-  numTest
+  numTest,
+  numFrown2Smile
 };
-byte patternSize[] =
+byte patternSize[] = //manually set until elegant solution is found
 {
   13,
-  8
+  8,
+  5
 };
 
 int symbol = 0;
 int pattern = 0;
 int sequence = 0;
-bool slide = false;
+bool boolAnimate = false;
+int style;
+enum animateStyle
+{
+  aniSlideLeft,
+  aniSlideUp,
+  aniAnimate
+};
 
 void setup() {
   // sets the pins as output
@@ -345,7 +359,7 @@ void setup() {
   // Set interrupt routine to be called
   FrequencyTimer2::setOnOverflow(display);
 
-  setSymbol(1);//smile
+  setSymbol(SMILE);//smile
   
   
   Serial.begin(9600);
@@ -369,34 +383,43 @@ void loop()
         case 1:
         {
           sequence = numHelloWorld;
-          slide = true;
+          boolAnimate = true;
+          style = aniSlideLeft;
           break;
         }
         case 2:
         {
           sequence = numTest;
-          slide = true;
+          boolAnimate = true;
+          style = aniSlideLeft;
           break;
         }
         case 3:
         {
           setSymbol(SMILE);
           Serial.println("set smile");
-          slide = false;
+          boolAnimate = false;
           break;
         }
         case 4:
         {
           setSymbol(FROWN);
           Serial.println("set frown");
-          slide = false;
+          boolAnimate = false;
           break;
         }
         case 5:
         {
           setSymbol(CATFACE);
           Serial.println("set catface");
-          slide = false;
+          boolAnimate = false;
+          break;
+        }
+        case 6:
+        {
+          sequence = numFrown2Smile;
+          boolAnimate = true;
+          style = aniAnimate;
           break;
         }
         default:
@@ -407,7 +430,7 @@ void loop()
     }
     
   }
-  if(slide)
+  if(boolAnimate)
   {
     //Serial.println(sizeof(&patternCompendium[0]));
     pattern = ++pattern;
@@ -415,7 +438,30 @@ void loop()
     {
       pattern = 0;//beginning of hello world
     }
-    slidePatternLeft(sequence, pattern, 60);  
+    switch(style)
+    {
+      case aniSlideLeft:
+      {
+        slidePatternLeft(sequence, pattern, 60);
+        break;
+      }
+      case aniSlideUp:
+      {
+        slidePatternUp(sequence, pattern, 60);
+        break;
+      }
+      case aniAnimate:
+      {
+        animate(sequence, pattern, 200,0);
+        break;
+      }
+      
+      
+      default:
+      {
+        
+      }
+    }  
   }
 }
 

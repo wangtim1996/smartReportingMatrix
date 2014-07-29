@@ -202,6 +202,17 @@ byte *patternCompendium[] =
   patternHelloWorld,patternTest
 };
 
+enum patternLib
+{
+  numHelloWorld,
+  numTest
+};
+byte patternSize[] =
+{
+  13,
+  8
+};
+
 int symbol = 0;
 int pattern = 0;
 int sequence = 0;
@@ -235,7 +246,7 @@ void setup() {
   
   
   Serial.begin(9600);
-
+  Serial.println(sizeof(&patternCompendium[0]));
 }
 
 void loop() {
@@ -250,7 +261,7 @@ void loop() {
     {
       if(input == 1)
       {
-        sequence = 0;
+        sequence = numHelloWorld;
         slide = true;
 
       }
@@ -258,7 +269,7 @@ void loop() {
       {
         if(input == 4)
         {
-          sequence = 1;
+          sequence = numTest;
           slide = true;
         }
         pattern = 0; //beginning of hello world
@@ -283,9 +294,9 @@ void loop() {
   }
   if(slide)
   {
-    Serial.println(sizeof(&patternCompendium[0]));
+    //Serial.println(sizeof(&patternCompendium[0]));
     pattern = ++pattern;
-    if(pattern > sizeof(patternCompendium[sequence]))//end of hello world!
+    if(pattern > patternSize[sequence])//end of hello world!
     {
       pattern = 0;//beginning of hello world
     }

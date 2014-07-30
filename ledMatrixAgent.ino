@@ -46,13 +46,32 @@ byte symbols[][8][8] PROGMEM =
   EXCLAIM8x8,
   QUESTION8x8,
   FULLSTOP8x8,
+  A8x8,
+  B8x8,
+  C8x8,
   D8x8,
   E8x8,
+  F8x8,
+  G8x8,
   H8x8,
+  I8x8,
+  J8x8,
+  K8x8,
   L8x8,
+  M8x8,
+  N8x8,
   O8x8,
+  P8x8,
+  Q8x8,
   R8x8,
-  W8x8
+  S8x8,
+  T8x8,
+  U8x8,
+  V8x8,
+  W8x8,
+  X8x8,
+  Y8x8,
+  Z8x8
 };
 
 //byte currentSymbol[8][8];
@@ -71,13 +90,32 @@ enum symbolLib
   EXCLAIM,
   QUESTION,
   FULLSTOP,
+  A,
+  B,
+  C,
   D,
   E,
+  F,
+  G,
   H,
+  I,
+  J,
+  K,
   L,
+  M,
+  N,
   O,
+  P,
+  Q,
   R,
-  W
+  S,
+  T,
+  U,
+  V,
+  W,
+  X,
+  Y,
+  Z
 };
 
 
@@ -279,7 +317,8 @@ void loop()
         }
         
       }
-      if(pattern >= patternSize[sequence] - 1)//end of hello world!//-1 for ghetto fix sequences so I don't access some random memory...
+      pattern = ++pattern;
+      if(pattern >= patternSize[sequence])//end of hello world!//-1 for ghetto fix sequences so I don't access some random memory...
       {
         pattern = 0;//beginning of hello world
         if(numCycles != -1)
@@ -287,7 +326,7 @@ void loop()
           numCycles--;
         }
       }  
-      pattern = ++pattern;
+      
       
     }
   }
